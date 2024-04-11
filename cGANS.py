@@ -361,7 +361,7 @@ os.makedirs(sample_dir, exist_ok=True)
 def save_samples(index, generator, train_dl, show=True):
     real_images, sketches, real_labels = next(iter(train_dl))
     latent_input, gen_labels = Generate_Fakes(sketches=sketches)
-    fake_images = generator(latent_input)
+    fake_images = generator(latent_input.to(device))
 
     fake_fname = "generated-images-{0:0=4d}.png".format(index)
     save_image(denorm(fake_images), os.path.join(sample_dir, fake_fname), nrow=8)
@@ -399,7 +399,8 @@ def fit(epochs, lr, start_idx=1):
 
         for idx, (real_images, sketches, real_labels) in tqdm(enumerate(train_dl), 
                                                               desc= "Training", dynamic_ncols=True,total=len(train_dl)):  # Ensure that real_labels are provided
-            real_images = real_images.to(device)
+            # Configure input
+            real_images  = Variable(real_images.type(Tensor).to(device), requires_grad=True)
             sketches = sketches.to(device)
             real_labels = real_labels.to(device)
             # Adversarial ground truths
@@ -411,17 +412,20 @@ def fit(epochs, lr, start_idx=1):
             # generate fake input
             latent_input, gen_labels = Generate_Fakes(sketches=sketches)
             
-            
+            latent_input =  Variable(latent_input.to(device))
             # ----------------------
             # Train Discriminator
             # ----------------------
-
+            
             opt_d.zero_grad()
+            
+            fake_images = generator(latent_input)
+
             #  real images
             validity_real = discriminator(real_images,real_labels)
 
             #  fake images
-            validity_fake = discriminator(fake_images.detach(), gen_labels)
+            validity_fake = discriminator(fake_images, gen_labels)
 
              # Compute W-div gradient penalty
             real_grad_out = Variable(Tensor(real_images.size(0), 1).fill_(1.0), requires_grad=False)
@@ -431,7 +435,9 @@ def fit(epochs, lr, start_idx=1):
             real_grad_norm = real_grad.view(real_grad.size(0), -1).pow(2).sum(1) ** (p / 2)
 
             fake_grad_out = Variable(Tensor(fake_images.size(0), 1).fill_(1.0), requires_grad=False)
-            fake_grad = autograd.grad(validity_fake, fake_images, fake_grad_out, create_graph=True, retain_graph=True, only_inputs=True)[0]
+
+            fake_grad = autograd.grad(validity_fake, fake_images, fake_grad_out, create_graph=True, retain_graph=True, only_inputs=True,allow_unused=True)[0]
+            
             fake_grad_norm = fake_grad.view(fake_grad.size(0), -1).pow(2).sum(1) ** (p / 2)
 
             div_gp = torch.mean(real_grad_norm + fake_grad_norm) * k / 2
