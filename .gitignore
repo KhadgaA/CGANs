@@ -1,0 +1,6 @@
+*.jpg
+*.zip
+*.png
+dataset/cifar-100-python.tar.gz
+*._*
+*.csv
