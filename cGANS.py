@@ -1,3 +1,4 @@
+import argparse
 import os
 import torch.nn as nn
 from torch.utils.data import DataLoader
@@ -20,6 +21,25 @@ import numpy as np
 from PIL import Image
 import pandas as pd
 import glob
+from torch.autograd import Variable
+import torch.autograd as autograd
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--n_epochs", type=int, default=100, help="number of epochs of training")
+parser.add_argument("--batch_size", type=int, default=64, help="size of the batches")
+parser.add_argument("--lr", type=float, default=0.0002, help="adam: learning rate")
+parser.add_argument("--b1", type=float, default=0.5, help="adam: decay of first order momentum of gradient")
+parser.add_argument("--b2", type=float, default=0.999, help="adam: decay of first order momentum of gradient")
+parser.add_argument("--n_cpu", type=int, default=4, help="number of cpu threads to use during batch generation")
+# parser.add_argument("--latent_dim", type=int, default=100, help="dimensionality of the latent space")
+# parser.add_argument("--img_size", type=int, default=256, help="size of each image dimension")
+# parser.add_argument("--channels", type=int, default=1, help="number of image channels")
+parser.add_argument("--n_critic", type=int, default=5, help="number of training steps for discriminator per iter")
+parser.add_argument("--clip_value", type=float, default=0.01, help="lower and upper clip value for disc. weights")
+parser.add_argument("--sample_interval", type=int, default=100, help="interval betwen image samples")
+args = parser.parse_args()
+print(args)
+
 
 ngpu = torch.cuda.device_count()
 print('num gpus available: ', ngpu)
@@ -33,7 +53,7 @@ labels_df = "dataset/dl_assignment_4/Train/Train_labels.csv"
 
 
 image_size = 256
-batch_size = 64 * 2
+batch_size = args.batch_size
 stats_image = (0.5, 0.5, 0.5), (0.5, 0.5, 0.5)
 stats_sketch = (0,), (1)
 
@@ -147,10 +167,7 @@ train_dl = DataLoader(
     pin_memory=True,
 )
 
-# print(next(iter(train_dl)))
 
-# import sys
-# sys.exit()
 
 
 def denorm(img_tensors):
@@ -204,7 +221,7 @@ class Discriminator(nn.Module):
         concatenated = torch.cat((x, labels), dim=1)
         # print(concatenated.shape, x.shape, labels.shape)
         x = self.fc(concatenated)
-        x = self.sigmoid(x)
+        # x = self.sigmoid(x)
         return x
 
 
@@ -273,9 +290,7 @@ class Generator(nn.Module):
         down_7 = self.down_convolution_4(down_6)
         down_8 = self.max_pool2d(down_7)
         down_9 = self.down_convolution_5(down_8)
-        # import pdb
-        # pdb.set_trace()
-        # # break
+
         up_1 = self.up_transpose_1(down_9)
         x = self.up_convolution_1(torch.cat([down_7, up_1], 1))
         up_2 = self.up_transpose_2(x)
@@ -294,26 +309,7 @@ generator = Generator(ngpu).to(device)
 if (device.type == 'cuda') and (ngpu > 1):
     generator = nn.DataParallel(generator, list(range(ngpu)))
     discriminator = nn.DataParallel(discriminator, list(range(ngpu)))
-# generator = Generator()
-# generator = generator.to(device)
 
-# discriminator = discriminator.to(device)
-
-# # # Generate a random input tensor with shape (batch_size, channels, height, width)
-# batch_size = 1
-# input_channels = 8
-# height, width = 256, 256  # input image size
-# input_tensor = torch.randn(batch_size, input_channels, height, width)
-
-
-# output_tensor = generator(input_tensor)
-# print("Output tensor shape:", output_tensor.shape)
-
-
-# output_image = output_tensor.squeeze().detach().cpu().numpy()
-# plt.imshow(output_image.transpose(1, 2, 0))  #(batch, channels, height, width)
-# plt.axis('off')
-# plt.show()
 def sample_sketches(num_sketches):
     sketches = []
     for i in range(num_sketches):
@@ -357,55 +353,8 @@ def Generate_Fakes(sketches):
     return noisy_sketchs, fake_labels
 
 
-def train_discriminator(
-     real_images, real_labels, sketches, opt_d
-):
-    fake_images, fake_labels = Generate_Fakes(sketches, True)
 
-    opt_d.zero_grad()
-    # Passing real images through discriminator
-    real_preds = discriminator(real_images, real_labels)
-    real_targets = torch.ones(real_images.size(0), 1, device=device)
-    real_loss = F.binary_cross_entropy(real_preds, real_targets)
-    real_loss.backward()
-    real_score = torch.mean(real_preds).item()
-
-    # Passing fake images through discriminator
-    fake_preds = discriminator(fake_images, fake_labels)
-    fake_targets = torch.zeros(fake_images.size(0), 1, device=device)
-    fake_loss = F.binary_cross_entropy(fake_preds, fake_targets)
-    fake_loss.backward()
-    fake_score = torch.mean(fake_preds).item()
-
-    # Update discriminator weights
-    loss = real_loss + fake_loss
-    # loss.backward()
-    opt_d.step()
-
-    return loss.item(), real_score, fake_score
-
-
-def train_generator( sketches, real_labels, opt_g):
-    opt_g.zero_grad()
-    # Generate fake images
-    fake_images, fake_labels = Generate_Fakes( sketches, True)
-
-    discriminator.eval()
-    fake_preds = discriminator(fake_images, fake_labels)
-
-    targets = torch.ones(fake_images.size(0), 1, device=device)
-
-    # Fool the discriminator
-    loss = F.binary_cross_entropy(fake_preds, targets)
-
-    # Updatwe generator weights
-    loss.backward()
-    opt_g.step()
-
-    return loss.item()
-
-
-sample_dir = "generated"
+sample_dir = "generated_wcgan"
 os.makedirs(sample_dir, exist_ok=True)
 
 
@@ -426,6 +375,7 @@ def save_samples(index, generator, train_dl, show=True):
 
 # fixed_latent = torch.randn(64, latent_size, 1, 1, device=device)
 adversarial_loss = torch.nn.MSELoss()
+Tensor = torch.cuda.FloatTensor if (device.type == 'cuda') else torch.FloatTensor
 
 def fit(epochs, lr, start_idx=1):
     torch.cuda.empty_cache()
@@ -437,14 +387,16 @@ def fit(epochs, lr, start_idx=1):
     losses_d = []
     real_scores = []
     fake_scores = []
+    
+    k = 2
+    p = 6
 
     # Create optimizers
     opt_d = torch.optim.Adam(discriminator.parameters(), lr=lr, betas=(0.5, 0.999))
     opt_g = torch.optim.Adam(generator.parameters(), lr=lr, betas=(0.5, 0.999))
 
     for epoch in range(epochs):
-        # generator.eval()
-        # discriminator.train()
+
         for idx, (real_images, sketches, real_labels) in tqdm(enumerate(train_dl), 
                                                               desc= "Training", dynamic_ncols=True,total=len(train_dl)):  # Ensure that real_labels are provided
             real_images = real_images.to(device)
@@ -458,50 +410,84 @@ def fit(epochs, lr, start_idx=1):
 
             # generate fake input
             latent_input, gen_labels = Generate_Fakes(sketches=sketches)
-            # ------------------
-            # Train generator
-            # ------------------
-            opt_g.zero_grad()
-            fake_images = generator(latent_input)
-            validity = discriminator(fake_images, gen_labels)
-            loss_g = adversarial_loss(validity, valid)
-            loss_g.backward()
-            opt_g.step()
-
+            
+            
             # ----------------------
             # Train Discriminator
             # ----------------------
 
             opt_d.zero_grad()
-            # Loss for real images
+            #  real images
             validity_real = discriminator(real_images,real_labels)
-            real_loss_d = adversarial_loss(validity_real, valid)
-            real_score =torch.mean(validity_real).item()
-            # Loss for fake images
+
+            #  fake images
             validity_fake = discriminator(fake_images.detach(), gen_labels)
-            fake_loss_d = adversarial_loss(validity_fake, fake)
-            fake_score = torch.mean(validity_fake).item()
+
+             # Compute W-div gradient penalty
+            real_grad_out = Variable(Tensor(real_images.size(0), 1).fill_(1.0), requires_grad=False)
+            
+            real_grad = autograd.grad(validity_real, real_images, real_grad_out, create_graph=True, retain_graph=True, only_inputs=True)[0]
+            
+            real_grad_norm = real_grad.view(real_grad.size(0), -1).pow(2).sum(1) ** (p / 2)
+
+            fake_grad_out = Variable(Tensor(fake_images.size(0), 1).fill_(1.0), requires_grad=False)
+            fake_grad = autograd.grad(validity_fake, fake_images, fake_grad_out, create_graph=True, retain_graph=True, only_inputs=True)[0]
+            fake_grad_norm = fake_grad.view(fake_grad.size(0), -1).pow(2).sum(1) ** (p / 2)
+
+            div_gp = torch.mean(real_grad_norm + fake_grad_norm) * k / 2
+
+               # Adversarial loss
+            loss_d = -torch.mean(validity_real) + torch.mean(validity_fake) + div_gp
+
+            # real_loss_d = adversarial_loss(validity_real, valid)
+            # real_score =torch.mean(validity_real).item()
+
+            
+
+            # fake_loss_d = adversarial_loss(validity_fake, fake)
+            # fake_score = torch.mean(validity_fake).item()
+            
             # Total discriminator loss
-            loss_d = (real_loss_d + fake_loss_d) / 2
+            # loss_d = (real_loss_d + fake_loss_d) / 2
             loss_d.backward()
             opt_d.step()
 
+            # Train the generator every n_critic steps
+            if idx % args.n_critic == 0:
+                # ------------------
+                # Train generator
+                # ------------------
+                opt_g.zero_grad()
+                fake_images = generator(latent_input)
+                validity_fake = discriminator(fake_images, gen_labels)
+                # loss_g = adversarial_loss(validity, valid)
+                loss_g = -torch.mean(validity_fake)
+                loss_g.backward()
+                opt_g.step()
 
+            
 
-            print(
-                "Epoch [{}/{}], Batch [{}/{}], loss_g:{:.4f}, loss_d:{:.4f}, real_scores:{:.4f}, fake_score:{:.4f}".format(
-                    epoch + 1, epochs, idx, len(train_dl), loss_g, loss_d, real_score, fake_score
+                print(
+                    "Epoch [{}/{}], Batch [{}/{}], loss_g:{:.4f}, loss_d:{:.4f}, real_scores:{:.4f}, fake_score:{:.4f}".format(
+                        epoch + 1, epochs, idx, len(train_dl), loss_g, loss_d, 0, 0
+                    )
                 )
-            )
-            batches_done = epoch * len(train_dl) + idx
-            if batches_done % 100 == 0:
-                save_samples(epoch + start_idx, generator, train_dl, show=False)
+                batches_done = epoch * len(train_dl) + idx
+                if batches_done % args.sample_interval == 0:
+                    save_samples(epoch + start_idx, generator, train_dl, show=False)
+                
+                batches_done += args.n_critic
+                
+                losses_d.append(loss_d.item())
+                losses_g.append(loss_g.item())
+                # real_scores.append(real_score)
+                # fake_scores.append(fake_score)
 
     return losses_g, losses_d, real_scores, fake_scores
 
 
-lr = 0.0002
-epochs = 100
+lr = args.lr #0.0002
+epochs = args.n_epochs
 
 history = fit(epochs, lr)
 
