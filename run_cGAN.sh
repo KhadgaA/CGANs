@@ -4,7 +4,7 @@
 #SBATCH --nodes=1               # Run all processes on a single node
 #SBATCH --ntasks=1              # Run a single task
 #SBATCH --cpus-per-task=4       # Number of CPU cores per task
-#SBATCH --gres=gpu:1         # Include gpu for the task (only for GPU jobs)              # Total memory limit (optional)         # Time limit hrs:min:sec (optional)
+#SBATCH --gres=gpu:2         # Include gpu for the task (only for GPU jobs)              # Total memory limit (optional)         # Time limit hrs:min:sec (optional)
 #SBATCH --output=first_%j.log   # Standard output and error log
 
 module load python/3.10.pytorch

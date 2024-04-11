@@ -21,7 +21,9 @@ from PIL import Image
 import pandas as pd
 import glob
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+ngpu = torch.cuda.device_count()
+print('num gpus available: ', ngpu)
+device = torch.device("cuda:0" if (torch.cuda.is_available() and ngpu > 0) else "cpu")
 
 image_dir = "dataset/dl_assignment_4/Train_data"
 sketch_dir = "dataset/dl_assignment_4/Train/Contours"
@@ -31,7 +33,7 @@ labels_df = "dataset/dl_assignment_4/Train/Train_labels.csv"
 
 
 image_size = 256
-batch_size = 64
+batch_size = 64 * 2
 stats_image = (0.5, 0.5, 0.5), (0.5, 0.5, 0.5)
 stats_sketch = (0,), (1)
 
@@ -167,9 +169,9 @@ def denorm(img_tensors):
 
 
 class Discriminator(nn.Module):
-    def __init__(self, num_classes):
+    def __init__(self, num_classes,ngpu=0):
         super(Discriminator, self).__init__()
-
+        self.ngpu = ngpu
         self.main = nn.Sequential(
             nn.Conv2d(3, 64, kernel_size=4, stride=2, padding=1, bias=False),
             nn.BatchNorm2d(64),
@@ -207,7 +209,7 @@ class Discriminator(nn.Module):
 
 
 num_classes = len(train_ds.labels_df.columns) - 1
-discriminator = Discriminator(num_classes)
+
 
 # """Generator Network"""
 
@@ -224,8 +226,9 @@ def double_convolution(in_channels, out_channels):
 
 
 class Generator(nn.Module):
-    def __init__(self):
+    def __init__(self,ngpu):
         super(Generator, self).__init__()
+        self.ngpu = ngpu
         self.max_pool2d = nn.MaxPool2d(kernel_size=2, stride=2)
         # Contracting path.
         # Each convolution is applied twice.
@@ -284,10 +287,17 @@ class Generator(nn.Module):
         out = self.out(x)
         return out
 
+discriminator = Discriminator(num_classes,ngpu).to(device)
+generator = Generator(ngpu).to(device)
 
-generator = Generator()
-generator = generator.to(device)
-discriminator = discriminator.to(device)
+# Handle multi-GPU if desired
+if (device.type == 'cuda') and (ngpu > 1):
+    generator = nn.DataParallel(generator, list(range(ngpu)))
+    discriminator = nn.DataParallel(discriminator, list(range(ngpu)))
+# generator = Generator()
+# generator = generator.to(device)
+
+# discriminator = discriminator.to(device)
 
 # # # Generate a random input tensor with shape (batch_size, channels, height, width)
 # batch_size = 1
@@ -327,7 +337,7 @@ def sample_sketches(num_sketches):
     return sketches
 
 
-def Generate_Fakes(generator, sketches, noteval=True):
+def Generate_Fakes(sketches, noteval=True):
     noisy_sketchs = add_gaussian_noise(sketches)
     noisy_sketchs_ = []
     fake_labels = torch.randint(0, 7, (sketches.size(0), 1), device=sketches.device)
@@ -358,9 +368,9 @@ def Generate_Fakes(generator, sketches, noteval=True):
 
 
 def train_discriminator(
-    discriminator, generator, real_images, real_labels, sketches, opt_d
+     real_images, real_labels, sketches, opt_d
 ):
-    fake_images, fake_labels = Generate_Fakes(generator, sketches, True)
+    fake_images, fake_labels = Generate_Fakes(sketches, True)
 
     opt_d.zero_grad()
     # Passing real images through discriminator
@@ -385,10 +395,10 @@ def train_discriminator(
     return loss.item(), real_score, fake_score
 
 
-def train_generator(generator, discriminator, sketches, real_labels, opt_g):
+def train_generator( sketches, real_labels, opt_g):
     opt_g.zero_grad()
     # Generate fake images
-    fake_images, fake_labels = Generate_Fakes(generator, sketches, True)
+    fake_images, fake_labels = Generate_Fakes( sketches, True)
 
     discriminator.eval()
     fake_preds = discriminator(fake_images, fake_labels)
@@ -411,7 +421,7 @@ os.makedirs(sample_dir, exist_ok=True)
 
 def save_samples(index, generator, train_dl, show=True):
     real_images, sketches, real_labels = next(iter(train_dl))
-    fake_images, fake_labels = Generate_Fakes(generator, sketches.to(device), False)
+    fake_images, fake_labels = Generate_Fakes( sketches.to(device), False)
     fake_fname = "generated-images-{0:0=4d}.png".format(index)
     save_image(denorm(fake_images), os.path.join(sample_dir, fake_fname), nrow=8)
     print("Saving", fake_fname)
@@ -448,14 +458,14 @@ def fit(epochs, lr, start_idx=1):
         # generator.eval()
         # discriminator.train()
         for idx, (real_images, sketches, real_labels) in tqdm(enumerate(train_dl), 
-        desc= "Training Descriminator", dynamic_ncols=True,total=len(train_dl)):  # Ensure that real_labels are provided
+                                                              desc= "Training", dynamic_ncols=True,total=len(train_dl)):  # Ensure that real_labels are provided
             real_images = real_images.to(device)
             sketches = sketches.to(device)
             real_labels = real_labels.to(device)
             # print(real_labels)
 
             loss_d, real_score, fake_score = train_discriminator(
-                discriminator, generator, real_images, real_labels, sketches, opt_d
+                 real_images, real_labels, sketches, opt_d
             )
 
             running_loss_d += loss_d
@@ -466,7 +476,7 @@ def fit(epochs, lr, start_idx=1):
             # elif idx > 100:
             #     break
             loss_g = train_generator(
-                generator, discriminator, sketches, real_labels, opt_g)
+                 sketches, real_labels, opt_g)
             running_loss_g += loss_g
             
             # break
