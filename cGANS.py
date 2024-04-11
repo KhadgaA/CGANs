@@ -337,13 +337,11 @@ def sample_sketches(num_sketches):
     return sketches
 
 
-def Generate_Fakes(sketches, noteval=True):
+def Generate_Fakes(sketches):
     noisy_sketchs = add_gaussian_noise(sketches)
     noisy_sketchs_ = []
     fake_labels = torch.randint(0, 7, (sketches.size(0), 1), device=sketches.device)
     for noisy_sketch, fake_label in zip(noisy_sketchs, fake_labels):
-        # print(noisy_sketch.shape, real_label.shape)
-        # print(real_label)
         channels = torch.zeros(
             size=(7, *noisy_sketch.shape), device=noisy_sketch.device
         )
@@ -353,18 +351,10 @@ def Generate_Fakes(sketches, noteval=True):
 
     noisy_sketchs = torch.stack(noisy_sketchs_)
 
-    # print(noisy_sketchs.shape)
-    if noteval:
-        fake_images = generator(noisy_sketchs)
-    else:
-        generator.eval()
-        fake_images = generator(noisy_sketchs)
     # convert fake_labels to one-hot encoding
     fake_labels = F.one_hot(fake_labels, num_classes=7).squeeze(1).float().to(device)
-    # import pdb
 
-    # pdb.set_trace()
-    return fake_images, fake_labels
+    return noisy_sketchs, fake_labels
 
 
 def train_discriminator(
@@ -421,7 +411,9 @@ os.makedirs(sample_dir, exist_ok=True)
 
 def save_samples(index, generator, train_dl, show=True):
     real_images, sketches, real_labels = next(iter(train_dl))
-    fake_images, fake_labels = Generate_Fakes( sketches.to(device), False)
+    latent_input, gen_labels = Generate_Fakes(sketches=sketches)
+    fake_images = generator(latent_input)
+
     fake_fname = "generated-images-{0:0=4d}.png".format(index)
     save_image(denorm(fake_images), os.path.join(sample_dir, fake_fname), nrow=8)
     print("Saving", fake_fname)
@@ -433,7 +425,7 @@ def save_samples(index, generator, train_dl, show=True):
 
 
 # fixed_latent = torch.randn(64, latent_size, 1, 1, device=device)
-
+adversarial_loss = torch.nn.MSELoss()
 
 def fit(epochs, lr, start_idx=1):
     torch.cuda.empty_cache()
@@ -447,14 +439,10 @@ def fit(epochs, lr, start_idx=1):
     fake_scores = []
 
     # Create optimizers
-    opt_d = torch.optim.Adam(discriminator.parameters(), lr=0.001, betas=(0.5, 0.999))
+    opt_d = torch.optim.Adam(discriminator.parameters(), lr=lr, betas=(0.5, 0.999))
     opt_g = torch.optim.Adam(generator.parameters(), lr=lr, betas=(0.5, 0.999))
 
     for epoch in range(epochs):
-        running_loss_d = 0.0
-        running_loss_g = 0.0
-        running_real_score = 0.0
-        running_fake_score = 0.0
         # generator.eval()
         # discriminator.train()
         for idx, (real_images, sketches, real_labels) in tqdm(enumerate(train_dl), 
@@ -462,56 +450,52 @@ def fit(epochs, lr, start_idx=1):
             real_images = real_images.to(device)
             sketches = sketches.to(device)
             real_labels = real_labels.to(device)
-            # print(real_labels)
-
-            loss_d, real_score, fake_score = train_discriminator(
-                 real_images, real_labels, sketches, opt_d
-            )
-
-            running_loss_d += loss_d
-            running_real_score += real_score
-            running_fake_score += fake_score
-            # if idx > 50 and epochs<50:
-            #     break
-            # elif idx > 100:
-            #     break
-            loss_g = train_generator(
-                 sketches, real_labels, opt_g)
-            running_loss_g += loss_g
+            # Adversarial ground truths
+            batch_size = real_images.shape[0]
             
-            # break
-        running_loss_d /= idx+1
-        running_real_score /= idx+1
-        running_fake_score /= idx+1
+            valid  = torch.full((batch_size,1), 1.0, dtype=torch.float, device=device)
+            fake = torch.full((batch_size,1), 0.0, dtype=torch.float, device=device)
 
-        # generator.train()
-        # discriminator.eval()
-        # for real_images, sketches, real_labels in tqdm(train_dl,desc= "Training Generator",dynamic_ncols=True):
-            # real_images = real_images.to(device)
-            # sketches = sketches.to(device)
-            # real_labels = real_labels.to(device)
+            # generate fake input
+            latent_input, gen_labels = Generate_Fakes(sketches=sketches)
+            # ------------------
+            # Train generator
+            # ------------------
+            opt_g.zero_grad()
+            fake_images = generator(latent_input)
+            validity = discriminator(fake_images, gen_labels)
+            loss_g = adversarial_loss(validity, valid)
+            loss_g.backward()
+            opt_g.step()
 
-            # loss_g = train_generator(
-            #     generator, discriminator, sketches, real_labels, opt_g
-            # )  # Pass real_labels to the generator
-            # running_loss_g += loss_g
-            
-            # break
+            # ----------------------
+            # Train Discriminator
+            # ----------------------
 
-        running_loss_g /= len(train_dl)
+            opt_d.zero_grad()
+            # Loss for real images
+            validity_real = discriminator(real_images,real_labels)
+            real_loss_d = adversarial_loss(validity_real, valid)
+            real_score =torch.mean(validity_real).item()
+            # Loss for fake images
+            validity_fake = discriminator(fake_images.detach(), gen_labels)
+            fake_loss_d = adversarial_loss(validity_fake, fake)
+            fake_score = torch.mean(validity_fake).item()
+            # Total discriminator loss
+            loss_d = (real_loss_d + fake_loss_d) / 2
+            loss_d.backward()
+            opt_d.step()
 
-        losses_g.append(running_loss_g)
-        losses_d.append(running_loss_d)
-        real_scores.append(running_real_score)
-        fake_scores.append(running_fake_score)
 
-        print(
-            "Epoch [{}/{}], loss_g:{:.4f}, loss_d:{:.4f}, real_scores:{:.4f}, fake_score:{:.4f}".format(
-                epoch + 1, epochs, loss_g, loss_d, real_score, fake_score
+
+            print(
+                "Epoch [{}/{}], Batch [{}/{}], loss_g:{:.4f}, loss_d:{:.4f}, real_scores:{:.4f}, fake_score:{:.4f}".format(
+                    epoch + 1, epochs, idx, len(train_dl), loss_g, loss_d, real_score, fake_score
+                )
             )
-        )
-
-        save_samples(epoch + start_idx, generator, train_dl, show=False)
+            batches_done = epoch * len(train_dl) + idx
+            if batches_done % 100 == 0:
+                save_samples(epoch + start_idx, generator, train_dl, show=False)
 
     return losses_g, losses_d, real_scores, fake_scores
 

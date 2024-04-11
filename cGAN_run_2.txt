@@ -1,0 +1,205 @@
+num gpus available:  2
+Training:   0%|          | 0/79 [00:00<?, ?it/s]Epoch [1/100], Batch [0/79], loss_g:0.2107, loss_d:0.2534, real_scores:0.5424, fake_score:0.5423
+Saving generated-images-0001.png
+Training:   1%|▏         | 1/79 [00:27<35:54, 27.62s/it]Epoch [1/100], Batch [1/79], loss_g:0.7456, loss_d:0.0524, real_scores:0.7557, fake_score:0.1366
+Training:   3%|▎         | 2/79 [00:38<23:04, 17.98s/it]Epoch [1/100], Batch [2/79], loss_g:0.8200, loss_d:0.0403, real_scores:0.8063, fake_score:0.0946
+Training:   4%|▍         | 3/79 [00:48<18:04, 14.26s/it]Epoch [1/100], Batch [3/79], loss_g:0.8167, loss_d:0.0191, real_scores:0.8672, fake_score:0.0965
+Training:   5%|▌         | 4/79 [00:59<16:13, 12.98s/it]Epoch [1/100], Batch [4/79], loss_g:0.8205, loss_d:0.0216, real_scores:0.8694, fake_score:0.0945
+Training:   6%|▋         | 5/79 [01:11<15:15, 12.37s/it]Epoch [1/100], Batch [5/79], loss_g:0.8277, loss_d:0.0146, real_scores:0.8982, fake_score:0.0904
+Training:   8%|▊         | 6/79 [01:21<14:06, 11.59s/it]Epoch [1/100], Batch [6/79], loss_g:0.8432, loss_d:0.0122, real_scores:0.9064, fake_score:0.0819
+Training:   9%|▉         | 7/79 [01:32<13:48, 11.51s/it]Epoch [1/100], Batch [7/79], loss_g:0.7362, loss_d:0.0153, real_scores:0.9281, fake_score:0.1426
+Training:  10%|█         | 8/79 [01:43<13:38, 11.53s/it]Epoch [1/100], Batch [8/79], loss_g:0.3673, loss_d:0.0859, real_scores:0.9176, fake_score:0.3945
+Training:  11%|█▏        | 9/79 [01:54<13:00, 11.16s/it]Epoch [1/100], Batch [9/79], loss_g:0.9728, loss_d:0.0129, real_scores:0.8857, fake_score:0.0137
+Training:  13%|█▎        | 10/79 [02:05<12:41, 11.04s/it]Epoch [1/100], Batch [10/79], loss_g:0.9767, loss_d:0.0102, real_scores:0.8958, fake_score:0.0117
+Training:  14%|█▍        | 11/79 [02:15<12:27, 10.99s/it]Epoch [1/100], Batch [11/79], loss_g:0.9467, loss_d:0.0106, real_scores:0.9124, fake_score:0.0270
+Training:  15%|█▌        | 12/79 [02:26<12:06, 10.85s/it]Epoch [1/100], Batch [12/79], loss_g:0.7603, loss_d:0.0166, real_scores:0.9281, fake_score:0.1299
+Training:  16%|█▋        | 13/79 [02:37<11:51, 10.79s/it]Epoch [1/100], Batch [13/79], loss_g:0.7657, loss_d:0.0140, real_scores:0.9301, fake_score:0.1251
+Training:  18%|█▊        | 14/79 [02:47<11:39, 10.76s/it]Epoch [1/100], Batch [14/79], loss_g:0.8666, loss_d:0.0089, real_scores:0.9335, fake_score:0.0692
+Training:  19%|█▉        | 15/79 [02:59<11:54, 11.17s/it]Epoch [1/100], Batch [15/79], loss_g:0.4458, loss_d:0.0823, real_scores:0.9377, fake_score:0.3551
+Training:  20%|██        | 16/79 [03:11<11:49, 11.26s/it]Epoch [1/100], Batch [16/79], loss_g:0.6790, loss_d:0.0328, real_scores:0.9250, fake_score:0.1838
+Training:  22%|██▏       | 17/79 [03:23<11:47, 11.42s/it]Epoch [1/100], Batch [17/79], loss_g:0.6538, loss_d:0.0308, real_scores:0.9094, fake_score:0.1931
+Training:  23%|██▎       | 18/79 [03:34<11:33, 11.37s/it]Epoch [1/100], Batch [18/79], loss_g:0.9686, loss_d:0.0053, real_scores:0.9259, fake_score:0.0159
+Training:  24%|██▍       | 19/79 [03:45<11:24, 11.41s/it]Epoch [1/100], Batch [19/79], loss_g:0.8475, loss_d:0.0105, real_scores:0.9263, fake_score:0.0802
+Training:  25%|██▌       | 20/79 [03:57<11:11, 11.38s/it]Epoch [1/100], Batch [20/79], loss_g:0.9354, loss_d:0.0061, real_scores:0.9361, fake_score:0.0329
+Training:  27%|██▋       | 21/79 [04:08<10:48, 11.19s/it]Epoch [1/100], Batch [21/79], loss_g:0.7638, loss_d:0.0119, real_scores:0.9532, fake_score:0.1265
+Training:  28%|██▊       | 22/79 [04:19<10:36, 11.16s/it]Epoch [1/100], Batch [22/79], loss_g:0.3949, loss_d:0.0855, real_scores:0.9565, fake_score:0.3843
+Training:  29%|██▉       | 23/79 [04:28<09:56, 10.66s/it]Epoch [1/100], Batch [23/79], loss_g:0.8275, loss_d:0.0125, real_scores:0.9248, fake_score:0.0913
+Training:  30%|███       | 24/79 [04:38<09:26, 10.29s/it]Epoch [1/100], Batch [24/79], loss_g:0.8149, loss_d:0.0148, real_scores:0.9166, fake_score:0.0985
+Training:  32%|███▏      | 25/79 [04:47<09:00, 10.01s/it]Epoch [1/100], Batch [25/79], loss_g:0.8880, loss_d:0.0149, real_scores:0.9097, fake_score:0.0579
+Training:  33%|███▎      | 26/79 [04:57<08:46,  9.93s/it]Epoch [1/100], Batch [26/79], loss_g:0.8146, loss_d:0.0116, real_scores:0.9303, fake_score:0.0983
+Training:  34%|███▍      | 27/79 [05:07<08:37,  9.94s/it]Epoch [1/100], Batch [27/79], loss_g:0.8280, loss_d:0.0127, real_scores:0.9348, fake_score:0.0911
+Training:  35%|███▌      | 28/79 [05:17<08:30, 10.01s/it]Epoch [1/100], Batch [28/79], loss_g:0.8504, loss_d:0.0140, real_scores:0.9236, fake_score:0.0788
+Training:  37%|███▋      | 29/79 [05:27<08:18,  9.97s/it]Epoch [1/100], Batch [29/79], loss_g:0.8408, loss_d:0.0146, real_scores:0.9294, fake_score:0.0845
+Training:  38%|███▊      | 30/79 [05:37<08:11, 10.03s/it]Epoch [1/100], Batch [30/79], loss_g:0.7915, loss_d:0.0130, real_scores:0.9363, fake_score:0.1118
+Training:  39%|███▉      | 31/79 [05:48<08:15, 10.33s/it]Epoch [1/100], Batch [31/79], loss_g:0.6906, loss_d:0.0321, real_scores:0.9179, fake_score:0.1757
+Training:  41%|████      | 32/79 [05:57<07:42,  9.85s/it]Epoch [1/100], Batch [32/79], loss_g:0.6952, loss_d:0.0315, real_scores:0.9094, fake_score:0.1730
+Training:  42%|████▏     | 33/79 [06:06<07:30,  9.78s/it]Epoch [1/100], Batch [33/79], loss_g:0.8509, loss_d:0.0230, real_scores:0.8673, fake_score:0.0790
+Training:  43%|████▎     | 34/79 [06:16<07:25,  9.89s/it]Epoch [1/100], Batch [34/79], loss_g:0.5018, loss_d:0.0662, real_scores:0.9398, fake_score:0.3082
+Training:  44%|████▍     | 35/79 [06:27<07:21, 10.03s/it]Epoch [1/100], Batch [35/79], loss_g:0.9564, loss_d:0.0098, real_scores:0.9287, fake_score:0.0224
+Training:  46%|████▌     | 36/79 [06:36<06:58,  9.74s/it]Epoch [1/100], Batch [36/79], loss_g:0.7929, loss_d:0.0195, real_scores:0.9278, fake_score:0.1107
+Training:  47%|████▋     | 37/79 [06:45<06:45,  9.65s/it]Epoch [1/100], Batch [37/79], loss_g:0.7152, loss_d:0.0737, real_scores:0.9417, fake_score:0.2053
+Training:  48%|████▊     | 38/79 [06:54<06:29,  9.49s/it]Epoch [1/100], Batch [38/79], loss_g:0.9403, loss_d:0.0270, real_scores:0.8910, fake_score:0.0304
+Training:  49%|████▉     | 39/79 [07:05<06:36,  9.92s/it]Epoch [1/100], Batch [39/79], loss_g:0.8833, loss_d:0.0100, real_scores:0.9439, fake_score:0.0605
+Training:  51%|█████     | 40/79 [07:15<06:24,  9.87s/it]Epoch [1/100], Batch [40/79], loss_g:0.6527, loss_d:0.0449, real_scores:0.9643, fake_score:0.2155
+Training:  52%|█████▏    | 41/79 [07:25<06:11,  9.78s/it]Epoch [1/100], Batch [41/79], loss_g:0.9595, loss_d:0.0075, real_scores:0.9532, fake_score:0.0205
+Training:  53%|█████▎    | 42/79 [07:35<06:12, 10.07s/it]Epoch [1/100], Batch [42/79], loss_g:0.9429, loss_d:0.0050, real_scores:0.9598, fake_score:0.0291
+Training:  54%|█████▍    | 43/79 [07:45<05:56,  9.90s/it]Epoch [1/100], Batch [43/79], loss_g:0.8381, loss_d:0.0064, real_scores:0.9687, fake_score:0.0854
+Training:  56%|█████▌    | 44/79 [07:54<05:33,  9.54s/it]Epoch [1/100], Batch [44/79], loss_g:0.8537, loss_d:0.0064, real_scores:0.9651, fake_score:0.0770
+Training:  57%|█████▋    | 45/79 [08:04<05:29,  9.69s/it]Epoch [1/100], Batch [45/79], loss_g:0.8568, loss_d:0.0089, real_scores:0.9633, fake_score:0.0749
+Training:  58%|█████▊    | 46/79 [08:15<05:37, 10.24s/it]Epoch [1/100], Batch [46/79], loss_g:0.9298, loss_d:0.0047, real_scores:0.9673, fake_score:0.0359
+Training:  59%|█████▉    | 47/79 [08:25<05:26, 10.22s/it]Epoch [1/100], Batch [47/79], loss_g:0.9378, loss_d:0.0037, real_scores:0.9698, fake_score:0.0317
+Training:  61%|██████    | 48/79 [08:36<05:17, 10.24s/it]Epoch [1/100], Batch [48/79], loss_g:0.8601, loss_d:0.0039, real_scores:0.9851, fake_score:0.0734
+Training:  62%|██████▏   | 49/79 [08:46<05:05, 10.17s/it]Epoch [1/100], Batch [49/79], loss_g:0.9161, loss_d:0.0023, real_scores:0.9794, fake_score:0.0432
+Training:  63%|██████▎   | 50/79 [08:56<05:00, 10.35s/it]Epoch [1/100], Batch [50/79], loss_g:0.9114, loss_d:0.0028, real_scores:0.9761, fake_score:0.0456
+Training:  65%|██████▍   | 51/79 [09:07<04:49, 10.34s/it]Epoch [1/100], Batch [51/79], loss_g:0.8854, loss_d:0.0045, real_scores:0.9756, fake_score:0.0596
+Training:  66%|██████▌   | 52/79 [09:18<04:51, 10.78s/it]Epoch [1/100], Batch [52/79], loss_g:0.9184, loss_d:0.0070, real_scores:0.9563, fake_score:0.0419
+Training:  67%|██████▋   | 53/79 [09:30<04:44, 10.93s/it]Epoch [1/100], Batch [53/79], loss_g:0.8815, loss_d:0.0032, real_scores:0.9828, fake_score:0.0616
+Training:  68%|██████▊   | 54/79 [09:41<04:33, 10.93s/it]Epoch [1/100], Batch [54/79], loss_g:0.8681, loss_d:0.0051, real_scores:0.9763, fake_score:0.0693
+Training:  70%|██████▉   | 55/79 [09:51<04:19, 10.82s/it]Epoch [1/100], Batch [55/79], loss_g:0.6549, loss_d:0.0255, real_scores:0.9858, fake_score:0.1977
+Training:  71%|███████   | 56/79 [10:03<04:12, 10.98s/it]Epoch [1/100], Batch [56/79], loss_g:0.9457, loss_d:0.0065, real_scores:0.9618, fake_score:0.0275
+Training:  72%|███████▏  | 57/79 [10:13<03:58, 10.83s/it]Epoch [1/100], Batch [57/79], loss_g:0.8378, loss_d:0.0077, real_scores:0.9720, fake_score:0.0855
+Training:  73%|███████▎  | 58/79 [10:26<03:58, 11.37s/it]Epoch [1/100], Batch [58/79], loss_g:0.8573, loss_d:0.0053, real_scores:0.9722, fake_score:0.0743
+Training:  75%|███████▍  | 59/79 [10:37<03:47, 11.35s/it]Epoch [1/100], Batch [59/79], loss_g:0.9537, loss_d:0.0049, real_scores:0.9641, fake_score:0.0237
+Training:  76%|███████▌  | 60/79 [10:49<03:36, 11.41s/it]Epoch [1/100], Batch [60/79], loss_g:0.9751, loss_d:0.0039, real_scores:0.9622, fake_score:0.0126
+Training:  77%|███████▋  | 61/79 [10:59<03:19, 11.08s/it]Epoch [1/100], Batch [61/79], loss_g:0.8021, loss_d:0.0173, real_scores:0.9724, fake_score:0.1135
+Training:  78%|███████▊  | 62/79 [11:10<03:10, 11.21s/it]Epoch [1/100], Batch [62/79], loss_g:0.9993, loss_d:0.0077, real_scores:0.9425, fake_score:0.0003
+Training:  80%|███████▉  | 63/79 [11:20<02:53, 10.82s/it]Epoch [1/100], Batch [63/79], loss_g:0.9996, loss_d:0.0039, real_scores:0.9523, fake_score:0.0002
+Training:  81%|████████  | 64/79 [11:32<02:48, 11.22s/it]Epoch [1/100], Batch [64/79], loss_g:0.9996, loss_d:0.0058, real_scores:0.9570, fake_score:0.0002
+Training:  82%|████████▏ | 65/79 [11:44<02:37, 11.25s/it]Epoch [1/100], Batch [65/79], loss_g:0.9995, loss_d:0.0053, real_scores:0.9665, fake_score:0.0002
+Training:  84%|████████▎ | 66/79 [11:56<02:29, 11.49s/it]Epoch [1/100], Batch [66/79], loss_g:0.9995, loss_d:0.0059, real_scores:0.9619, fake_score:0.0003
+Training:  85%|████████▍ | 67/79 [12:06<02:13, 11.14s/it]Epoch [1/100], Batch [67/79], loss_g:0.9994, loss_d:0.0033, real_scores:0.9722, fake_score:0.0003
+Training:  86%|████████▌ | 68/79 [12:17<02:02, 11.14s/it]Epoch [1/100], Batch [68/79], loss_g:0.9993, loss_d:0.0016, real_scores:0.9801, fake_score:0.0004
+Training:  87%|████████▋ | 69/79 [12:28<01:48, 10.89s/it]Epoch [1/100], Batch [69/79], loss_g:0.9991, loss_d:0.0006, real_scores:0.9855, fake_score:0.0005
+Training:  89%|████████▊ | 70/79 [12:38<01:36, 10.68s/it]Epoch [1/100], Batch [70/79], loss_g:0.9987, loss_d:0.0007, real_scores:0.9865, fake_score:0.0006
+Training:  90%|████████▉ | 71/79 [12:49<01:26, 10.86s/it]Epoch [1/100], Batch [71/79], loss_g:0.9985, loss_d:0.0004, real_scores:0.9891, fake_score:0.0008
+Training:  91%|█████████ | 72/79 [13:00<01:16, 10.87s/it]Epoch [1/100], Batch [72/79], loss_g:0.9974, loss_d:0.0002, real_scores:0.9906, fake_score:0.0013
+Training:  92%|█████████▏| 73/79 [13:11<01:06, 11.05s/it]Epoch [1/100], Batch [73/79], loss_g:0.9944, loss_d:0.0003, real_scores:0.9897, fake_score:0.0028
+Training:  94%|█████████▎| 74/79 [13:24<00:57, 11.47s/it]Epoch [1/100], Batch [74/79], loss_g:0.9700, loss_d:0.0004, real_scores:0.9925, fake_score:0.0153
+Training:  95%|█████████▍| 75/79 [13:34<00:44, 11.08s/it]Epoch [1/100], Batch [75/79], loss_g:0.7632, loss_d:0.0160, real_scores:0.9794, fake_score:0.1317
+Training:  96%|█████████▌| 76/79 [13:44<00:31, 10.64s/it]Epoch [1/100], Batch [76/79], loss_g:0.9892, loss_d:0.0032, real_scores:0.9778, fake_score:0.0054
+Training:  97%|█████████▋| 77/79 [13:54<00:21, 10.66s/it]Epoch [1/100], Batch [77/79], loss_g:0.6251, loss_d:0.0390, real_scores:0.9456, fake_score:0.2134
+Training:  99%|█████████▊| 78/79 [14:05<00:10, 10.74s/it]Epoch [1/100], Batch [78/79], loss_g:0.9796, loss_d:0.0021, real_scores:0.9593, fake_score:0.0103
+Training: 100%|██████████| 79/79 [14:11<00:00,  9.20s/it]Training: 100%|██████████| 79/79 [14:11<00:00, 10.78s/it]
+Training:   0%|          | 0/79 [00:00<?, ?it/s]Epoch [2/100], Batch [0/79], loss_g:0.4840, loss_d:0.0677, real_scores:0.9190, fake_score:0.3115
+Training:   1%|▏         | 1/79 [00:11<14:42, 11.32s/it]Epoch [2/100], Batch [1/79], loss_g:0.9959, loss_d:0.0325, real_scores:0.8383, fake_score:0.0021
+Training:   3%|▎         | 2/79 [00:22<14:26, 11.26s/it]Epoch [2/100], Batch [2/79], loss_g:0.9953, loss_d:0.0085, real_scores:0.9482, fake_score:0.0023
+Training:   4%|▍         | 3/79 [00:33<13:58, 11.04s/it]Epoch [2/100], Batch [3/79], loss_g:0.9868, loss_d:0.0016, real_scores:0.9764, fake_score:0.0067
+Training:   5%|▌         | 4/79 [00:43<13:22, 10.70s/it]Epoch [2/100], Batch [4/79], loss_g:0.8163, loss_d:0.0214, real_scores:0.9754, fake_score:0.1099
+Training:   6%|▋         | 5/79 [00:54<13:25, 10.88s/it]Epoch [2/100], Batch [5/79], loss_g:0.8456, loss_d:0.0065, real_scores:0.9641, fake_score:0.0808
+Training:   8%|▊         | 6/79 [01:06<13:27, 11.06s/it]Epoch [2/100], Batch [6/79], loss_g:0.7775, loss_d:0.0444, real_scores:0.9611, fake_score:0.1500
+Training:   9%|▉         | 7/79 [01:16<12:53, 10.74s/it]Epoch [2/100], Batch [7/79], loss_g:0.9909, loss_d:0.0131, real_scores:0.9298, fake_score:0.0046
+Training:  10%|█         | 8/79 [01:27<12:45, 10.78s/it]Epoch [2/100], Batch [8/79], loss_g:0.9944, loss_d:0.0151, real_scores:0.9268, fake_score:0.0028
+Training:  11%|█▏        | 9/79 [01:38<12:50, 11.00s/it]Epoch [2/100], Batch [9/79], loss_g:0.9939, loss_d:0.0054, real_scores:0.9628, fake_score:0.0030
+Training:  13%|█▎        | 10/79 [01:48<12:16, 10.68s/it]Epoch [2/100], Batch [10/79], loss_g:0.9917, loss_d:0.0016, real_scores:0.9797, fake_score:0.0042
+Training:  14%|█▍        | 11/79 [02:00<12:28, 11.01s/it]Epoch [2/100], Batch [11/79], loss_g:0.9854, loss_d:0.0026, real_scores:0.9741, fake_score:0.0073
+Training:  15%|█▌        | 12/79 [02:10<11:53, 10.65s/it]Epoch [2/100], Batch [12/79], loss_g:0.9710, loss_d:0.0023, real_scores:0.9844, fake_score:0.0147
+Training:  16%|█▋        | 13/79 [02:21<12:04, 10.98s/it]Epoch [2/100], Batch [13/79], loss_g:0.9325, loss_d:0.0037, real_scores:0.9792, fake_score:0.0349
+Training:  18%|█▊        | 14/79 [02:33<12:06, 11.18s/it]Epoch [2/100], Batch [14/79], loss_g:0.9627, loss_d:0.0011, real_scores:0.9884, fake_score:0.0189
+Training:  19%|█▉        | 15/79 [02:45<12:14, 11.47s/it]Epoch [2/100], Batch [15/79], loss_g:0.9356, loss_d:0.0011, real_scores:0.9916, fake_score:0.0331
+Training:  20%|██        | 16/79 [02:56<11:52, 11.30s/it]Epoch [2/100], Batch [16/79], loss_g:0.9045, loss_d:0.0033, real_scores:0.9881, fake_score:0.0504
+Training:  22%|██▏       | 17/79 [03:08<11:54, 11.52s/it]Epoch [2/100], Batch [17/79], loss_g:0.9170, loss_d:0.0022, real_scores:0.9873, fake_score:0.0430
+Training:  23%|██▎       | 18/79 [03:20<11:48, 11.61s/it]Epoch [2/100], Batch [18/79], loss_g:0.9364, loss_d:0.0033, real_scores:0.9848, fake_score:0.0340
+Training:  24%|██▍       | 19/79 [03:31<11:26, 11.43s/it]Epoch [2/100], Batch [19/79], loss_g:0.9828, loss_d:0.0005, real_scores:0.9882, fake_score:0.0087
+Training:  25%|██▌       | 20/79 [03:41<10:59, 11.17s/it]Epoch [2/100], Batch [20/79], loss_g:0.9732, loss_d:0.0003, real_scores:0.9925, fake_score:0.0135
+Training:  27%|██▋       | 21/79 [03:52<10:34, 10.94s/it]Epoch [2/100], Batch [21/79], loss_g:0.8692, loss_d:0.0048, real_scores:0.9881, fake_score:0.0687
+Saving generated-images-0002.png
+Training:  28%|██▊       | 22/79 [04:17<14:29, 15.26s/it]Epoch [2/100], Batch [22/79], loss_g:0.7725, loss_d:0.0126, real_scores:0.9866, fake_score:0.1260
+Training:  29%|██▉       | 23/79 [04:28<13:01, 13.96s/it]Epoch [2/100], Batch [23/79], loss_g:0.9989, loss_d:0.0096, real_scores:0.9186, fake_score:0.0006
+Training:  30%|███       | 24/79 [04:40<12:06, 13.21s/it]Epoch [2/100], Batch [24/79], loss_g:0.9995, loss_d:0.0014, real_scores:0.9763, fake_score:0.0002
+Training:  32%|███▏      | 25/79 [04:51<11:29, 12.77s/it]Epoch [2/100], Batch [25/79], loss_g:0.9996, loss_d:0.0002, real_scores:0.9910, fake_score:0.0002
+Training:  33%|███▎      | 26/79 [05:03<11:01, 12.48s/it]Epoch [2/100], Batch [26/79], loss_g:0.9993, loss_d:0.0007, real_scores:0.9852, fake_score:0.0004
+Training:  34%|███▍      | 27/79 [05:14<10:28, 12.08s/it]Epoch [2/100], Batch [27/79], loss_g:0.9945, loss_d:0.0016, real_scores:0.9861, fake_score:0.0027
+Training:  35%|███▌      | 28/79 [05:25<09:55, 11.67s/it]Epoch [2/100], Batch [28/79], loss_g:0.3201, loss_d:0.1684, real_scores:0.9937, fake_score:0.5082
+Training:  37%|███▋      | 29/79 [05:36<09:27, 11.34s/it]Epoch [2/100], Batch [29/79], loss_g:0.9990, loss_d:0.3913, real_scores:0.1297, fake_score:0.0005
+Training:  38%|███▊      | 30/79 [05:47<09:12, 11.29s/it]Epoch [2/100], Batch [30/79], loss_g:0.9942, loss_d:0.0751, real_scores:0.7301, fake_score:0.0029
+Training:  39%|███▉      | 31/79 [05:58<08:58, 11.21s/it]Epoch [2/100], Batch [31/79], loss_g:0.7975, loss_d:0.0336, real_scores:0.8860, fake_score:0.1077
+Training:  41%|████      | 32/79 [06:10<09:06, 11.62s/it]Epoch [2/100], Batch [32/79], loss_g:0.7440, loss_d:0.0195, real_scores:0.9439, fake_score:0.1378
+Training:  42%|████▏     | 33/79 [06:21<08:39, 11.29s/it]Epoch [2/100], Batch [33/79], loss_g:0.9553, loss_d:0.0061, real_scores:0.9594, fake_score:0.0228
+Training:  43%|████▎     | 34/79 [06:31<08:16, 11.03s/it]Epoch [2/100], Batch [34/79], loss_g:0.9150, loss_d:0.0091, real_scores:0.9647, fake_score:0.0446
+Training:  44%|████▍     | 35/79 [06:41<07:51, 10.72s/it]Epoch [2/100], Batch [35/79], loss_g:0.9676, loss_d:0.0089, real_scores:0.9462, fake_score:0.0164
+Training:  46%|████▌     | 36/79 [06:51<07:23, 10.30s/it]Epoch [2/100], Batch [36/79], loss_g:0.9227, loss_d:0.0129, real_scores:0.9542, fake_score:0.0401
+Training:  47%|████▋     | 37/79 [07:02<07:30, 10.72s/it]Epoch [2/100], Batch [37/79], loss_g:0.8338, loss_d:0.0121, real_scores:0.9637, fake_score:0.0881
+Training:  48%|████▊     | 38/79 [07:14<07:35, 11.12s/it]Epoch [2/100], Batch [38/79], loss_g:0.8910, loss_d:0.0044, real_scores:0.9751, fake_score:0.0564
+Training:  49%|████▉     | 39/79 [07:26<07:33, 11.35s/it]Epoch [2/100], Batch [39/79], loss_g:0.9517, loss_d:0.0112, real_scores:0.9515, fake_score:0.0245
+Training:  51%|█████     | 40/79 [07:36<07:02, 10.83s/it]Epoch [2/100], Batch [40/79], loss_g:0.9458, loss_d:0.0115, real_scores:0.9573, fake_score:0.0276
+Training:  52%|█████▏    | 41/79 [07:48<07:01, 11.10s/it]Epoch [2/100], Batch [41/79], loss_g:0.9204, loss_d:0.0022, real_scores:0.9825, fake_score:0.0408
+Training:  53%|█████▎    | 42/79 [07:59<06:51, 11.11s/it]Epoch [2/100], Batch [42/79], loss_g:0.9332, loss_d:0.0133, real_scores:0.9502, fake_score:0.0341
+Training:  54%|█████▍    | 43/79 [08:11<06:48, 11.34s/it]Epoch [2/100], Batch [43/79], loss_g:0.9091, loss_d:0.0039, real_scores:0.9865, fake_score:0.0468
+Training:  56%|█████▌    | 44/79 [08:20<06:20, 10.88s/it]Epoch [2/100], Batch [44/79], loss_g:0.9262, loss_d:0.0019, real_scores:0.9839, fake_score:0.0379
+Training:  57%|█████▋    | 45/79 [08:31<06:07, 10.82s/it]Epoch [2/100], Batch [45/79], loss_g:0.9575, loss_d:0.0051, real_scores:0.9758, fake_score:0.0215
+Training:  58%|█████▊    | 46/79 [08:42<05:55, 10.77s/it]Epoch [2/100], Batch [46/79], loss_g:0.9246, loss_d:0.0062, real_scores:0.9756, fake_score:0.0386
+Training:  59%|█████▉    | 47/79 [08:52<05:36, 10.52s/it]Epoch [2/100], Batch [47/79], loss_g:0.9478, loss_d:0.0035, real_scores:0.9775, fake_score:0.0266
+Training:  61%|██████    | 48/79 [09:03<05:34, 10.78s/it]Epoch [2/100], Batch [48/79], loss_g:0.9627, loss_d:0.0009, real_scores:0.9877, fake_score:0.0189
+Training:  62%|██████▏   | 49/79 [09:15<05:35, 11.20s/it]Epoch [2/100], Batch [49/79], loss_g:0.9566, loss_d:0.0013, real_scores:0.9875, fake_score:0.0222
+Training:  63%|██████▎   | 50/79 [09:27<05:26, 11.25s/it]Epoch [2/100], Batch [50/79], loss_g:0.9221, loss_d:0.0047, real_scores:0.9835, fake_score:0.0405
+Training:  65%|██████▍   | 51/79 [09:38<05:13, 11.18s/it]Epoch [2/100], Batch [51/79], loss_g:0.9366, loss_d:0.0017, real_scores:0.9912, fake_score:0.0331
+Training:  66%|██████▌   | 52/79 [09:49<05:04, 11.28s/it]Epoch [2/100], Batch [52/79], loss_g:0.9794, loss_d:0.0026, real_scores:0.9834, fake_score:0.0105
+Training:  67%|██████▋   | 53/79 [10:00<04:52, 11.26s/it]Epoch [2/100], Batch [53/79], loss_g:0.9351, loss_d:0.0091, real_scores:0.9721, fake_score:0.0346
+Training:  68%|██████▊   | 54/79 [10:12<04:47, 11.50s/it]Epoch [2/100], Batch [54/79], loss_g:0.9932, loss_d:0.0031, real_scores:0.9776, fake_score:0.0034
+Training:  70%|██████▉   | 55/79 [10:25<04:40, 11.69s/it]Epoch [2/100], Batch [55/79], loss_g:0.9950, loss_d:0.0038, real_scores:0.9764, fake_score:0.0025
+Training:  71%|███████   | 56/79 [10:36<04:30, 11.75s/it]Epoch [2/100], Batch [56/79], loss_g:0.9945, loss_d:0.0004, real_scores:0.9895, fake_score:0.0027
+Training:  72%|███████▏  | 57/79 [10:47<04:09, 11.32s/it]Epoch [2/100], Batch [57/79], loss_g:0.9931, loss_d:0.0017, real_scores:0.9848, fake_score:0.0034
+Training:  73%|███████▎  | 58/79 [10:58<03:56, 11.24s/it]Epoch [2/100], Batch [58/79], loss_g:0.9910, loss_d:0.0029, real_scores:0.9790, fake_score:0.0045
+Training:  75%|███████▍  | 59/79 [11:08<03:41, 11.08s/it]Epoch [2/100], Batch [59/79], loss_g:0.9859, loss_d:0.0040, real_scores:0.9765, fake_score:0.0071
+Training:  76%|███████▌  | 60/79 [11:19<03:28, 10.96s/it]Epoch [2/100], Batch [60/79], loss_g:0.9746, loss_d:0.0022, real_scores:0.9871, fake_score:0.0128
+Training:  77%|███████▋  | 61/79 [11:29<03:12, 10.71s/it]Epoch [2/100], Batch [61/79], loss_g:0.9494, loss_d:0.0024, real_scores:0.9827, fake_score:0.0259
+Training:  78%|███████▊  | 62/79 [11:41<03:05, 10.89s/it]Epoch [2/100], Batch [62/79], loss_g:0.9571, loss_d:0.0010, real_scores:0.9928, fake_score:0.0222
+Training:  80%|███████▉  | 63/79 [11:51<02:53, 10.87s/it]Epoch [2/100], Batch [63/79], loss_g:0.9358, loss_d:0.0018, real_scores:0.9942, fake_score:0.0337
+Training:  81%|████████  | 64/79 [12:02<02:43, 10.88s/it]Epoch [2/100], Batch [64/79], loss_g:0.9388, loss_d:0.0019, real_scores:0.9892, fake_score:0.0315
+Training:  82%|████████▏ | 65/79 [12:13<02:31, 10.83s/it]Epoch [2/100], Batch [65/79], loss_g:0.7914, loss_d:0.0117, real_scores:0.9876, fake_score:0.1148
+Training:  84%|████████▎ | 66/79 [12:23<02:18, 10.66s/it]Epoch [2/100], Batch [66/79], loss_g:0.9448, loss_d:0.0021, real_scores:0.9774, fake_score:0.0281
+Training:  85%|████████▍ | 67/79 [12:35<02:11, 10.93s/it]Epoch [2/100], Batch [67/79], loss_g:0.4888, loss_d:0.0847, real_scores:0.9912, fake_score:0.3399
+Training:  86%|████████▌ | 68/79 [12:46<02:02, 11.15s/it]Epoch [2/100], Batch [68/79], loss_g:0.8869, loss_d:0.1011, real_scores:0.6739, fake_score:0.0594
+Training:  87%|████████▋ | 69/79 [12:57<01:49, 10.98s/it]Epoch [2/100], Batch [69/79], loss_g:0.9697, loss_d:0.0385, real_scores:0.8515, fake_score:0.0153
+Training:  89%|████████▊ | 70/79 [13:08<01:37, 10.82s/it]Epoch [2/100], Batch [70/79], loss_g:0.4670, loss_d:0.0956, real_scores:0.9358, fake_score:0.3476
+Training:  90%|████████▉ | 71/79 [13:20<01:29, 11.19s/it]Epoch [2/100], Batch [71/79], loss_g:0.9981, loss_d:0.0419, real_scores:0.8380, fake_score:0.0009
+Training:  91%|█████████ | 72/79 [13:31<01:18, 11.23s/it]Epoch [2/100], Batch [72/79], loss_g:0.9924, loss_d:0.0150, real_scores:0.9144, fake_score:0.0038
+Training:  92%|█████████▏| 73/79 [13:42<01:06, 11.06s/it]Epoch [2/100], Batch [73/79], loss_g:0.9614, loss_d:0.0137, real_scores:0.9343, fake_score:0.0196
+Training:  94%|█████████▎| 74/79 [13:54<00:57, 11.56s/it]Epoch [2/100], Batch [74/79], loss_g:0.3658, loss_d:0.1026, real_scores:0.9654, fake_score:0.4162
+Training:  95%|█████████▍| 75/79 [14:05<00:44, 11.18s/it]Epoch [2/100], Batch [75/79], loss_g:0.9947, loss_d:0.1370, real_scores:0.5648, fake_score:0.0027
+Training:  96%|█████████▌| 76/79 [14:15<00:32, 10.89s/it]Epoch [2/100], Batch [76/79], loss_g:0.8952, loss_d:0.0727, real_scores:0.7354, fake_score:0.0551
+Training:  97%|█████████▋| 77/79 [14:26<00:22, 11.03s/it]Epoch [2/100], Batch [77/79], loss_g:0.6969, loss_d:0.0517, real_scores:0.8663, fake_score:0.1732
+Training:  99%|█████████▊| 78/79 [14:36<00:10, 10.79s/it]Epoch [2/100], Batch [78/79], loss_g:0.7730, loss_d:0.0315, real_scores:0.9019, fake_score:0.1244
+Training: 100%|██████████| 79/79 [14:41<00:00,  8.92s/it]Training: 100%|██████████| 79/79 [14:41<00:00, 11.16s/it]
+Training:   0%|          | 0/79 [00:00<?, ?it/s]Epoch [3/100], Batch [0/79], loss_g:0.8921, loss_d:0.0178, real_scores:0.9063, fake_score:0.0566
+Training:   1%|▏         | 1/79 [00:09<12:15,  9.43s/it]Epoch [3/100], Batch [1/79], loss_g:0.8938, loss_d:0.0128, real_scores:0.9228, fake_score:0.0556
+Training:   3%|▎         | 2/79 [00:19<12:56, 10.08s/it]Epoch [3/100], Batch [2/79], loss_g:0.8383, loss_d:0.0125, real_scores:0.9383, fake_score:0.0851
+Training:   4%|▍         | 3/79 [00:31<13:39, 10.79s/it]Epoch [3/100], Batch [3/79], loss_g:0.6170, loss_d:0.0471, real_scores:0.9302, fake_score:0.2241
+Training:   5%|▌         | 4/79 [00:42<13:41, 10.96s/it]Epoch [3/100], Batch [4/79], loss_g:0.9888, loss_d:0.0202, real_scores:0.8889, fake_score:0.0056
+Training:   6%|▋         | 5/79 [00:53<13:27, 10.91s/it]Epoch [3/100], Batch [5/79], loss_g:0.9916, loss_d:0.0270, real_scores:0.8701, fake_score:0.0042
+Training:   8%|▊         | 6/79 [01:03<12:55, 10.63s/it]Epoch [3/100], Batch [6/79], loss_g:0.8966, loss_d:0.0097, real_scores:0.9335, fake_score:0.0531
+Training:   9%|▉         | 7/79 [01:14<12:48, 10.67s/it]Epoch [3/100], Batch [7/79], loss_g:0.3033, loss_d:0.1165, real_scores:0.9105, fake_score:0.4497
+Training:  10%|█         | 8/79 [01:25<12:56, 10.93s/it]Epoch [3/100], Batch [8/79], loss_g:1.0000, loss_d:0.0811, real_scores:0.6954, fake_score:0.0000
+Training:  11%|█▏        | 9/79 [01:36<12:43, 10.91s/it]Epoch [3/100], Batch [9/79], loss_g:0.9999, loss_d:0.0429, real_scores:0.8075, fake_score:0.0000
+Training:  13%|█▎        | 10/79 [01:48<12:56, 11.26s/it]Epoch [3/100], Batch [10/79], loss_g:0.9998, loss_d:0.0089, real_scores:0.9360, fake_score:0.0001
+Training:  14%|█▍        | 11/79 [01:59<12:30, 11.03s/it]Epoch [3/100], Batch [11/79], loss_g:0.9996, loss_d:0.0027, real_scores:0.9591, fake_score:0.0002
+Training:  15%|█▌        | 12/79 [02:09<12:02, 10.78s/it]Epoch [3/100], Batch [12/79], loss_g:0.9995, loss_d:0.0033, real_scores:0.9603, fake_score:0.0003
+Training:  16%|█▋        | 13/79 [02:21<12:06, 11.01s/it]Epoch [3/100], Batch [13/79], loss_g:0.9992, loss_d:0.0034, real_scores:0.9654, fake_score:0.0004
+Training:  18%|█▊        | 14/79 [02:32<12:09, 11.23s/it]Epoch [3/100], Batch [14/79], loss_g:0.9989, loss_d:0.0031, real_scores:0.9726, fake_score:0.0005
+Training:  19%|█▉        | 15/79 [02:42<11:28, 10.76s/it]Epoch [3/100], Batch [15/79], loss_g:0.9984, loss_d:0.0032, real_scores:0.9771, fake_score:0.0008
+Training:  20%|██        | 16/79 [02:53<11:23, 10.84s/it]Epoch [3/100], Batch [16/79], loss_g:0.9975, loss_d:0.0010, real_scores:0.9845, fake_score:0.0013
+Training:  22%|██▏       | 17/79 [03:04<11:17, 10.92s/it]Epoch [3/100], Batch [17/79], loss_g:0.9960, loss_d:0.0023, real_scores:0.9795, fake_score:0.0020
+Training:  23%|██▎       | 18/79 [03:14<10:46, 10.60s/it]Epoch [3/100], Batch [18/79], loss_g:0.9923, loss_d:0.0047, real_scores:0.9734, fake_score:0.0039
+Training:  24%|██▍       | 19/79 [03:25<10:41, 10.69s/it]Epoch [3/100], Batch [19/79], loss_g:0.9821, loss_d:0.0011, real_scores:0.9807, fake_score:0.0090
+Training:  25%|██▌       | 20/79 [03:37<10:53, 11.07s/it]Epoch [3/100], Batch [20/79], loss_g:0.9466, loss_d:0.0009, real_scores:0.9887, fake_score:0.0272
+Training:  27%|██▋       | 21/79 [03:46<10:12, 10.56s/it]Epoch [3/100], Batch [21/79], loss_g:0.7963, loss_d:0.0084, real_scores:0.9924, fake_score:0.1101
+Training:  28%|██▊       | 22/79 [03:57<10:04, 10.60s/it]Epoch [3/100], Batch [22/79], loss_g:0.9948, loss_d:0.0006, real_scores:0.9841, fake_score:0.0026
+Training:  29%|██▉       | 23/79 [04:08<09:57, 10.67s/it]Epoch [3/100], Batch [23/79], loss_g:0.9967, loss_d:0.0003, real_scores:0.9870, fake_score:0.0017
+Training:  30%|███       | 24/79 [04:18<09:43, 10.62s/it]Epoch [3/100], Batch [24/79], loss_g:0.9962, loss_d:0.0008, real_scores:0.9836, fake_score:0.0019
+Training:  32%|███▏      | 25/79 [04:29<09:38, 10.71s/it]Epoch [3/100], Batch [25/79], loss_g:0.9936, loss_d:0.0022, real_scores:0.9775, fake_score:0.0032
+Training:  33%|███▎      | 26/79 [04:41<09:46, 11.06s/it]Epoch [3/100], Batch [26/79], loss_g:0.9818, loss_d:0.0027, real_scores:0.9701, fake_score:0.0091
+Training:  34%|███▍      | 27/79 [04:53<09:41, 11.19s/it]Epoch [3/100], Batch [27/79], loss_g:0.2291, loss_d:0.2724, real_scores:0.9757, fake_score:0.6547
+Training:  35%|███▌      | 28/79 [05:04<09:34, 11.27s/it]Epoch [3/100], Batch [28/79], loss_g:0.9968, loss_d:0.0120, real_scores:0.8989, fake_score:0.0016
+Training:  37%|███▋      | 29/79 [05:15<09:21, 11.23s/it]Epoch [3/100], Batch [29/79], loss_g:0.9970, loss_d:0.0217, real_scores:0.8544, fake_score:0.0015
+Training:  38%|███▊      | 30/79 [05:27<09:22, 11.48s/it]Epoch [3/100], Batch [30/79], loss_g:0.9942, loss_d:0.0236, real_scores:0.8560, fake_score:0.0029
+Training:  39%|███▉      | 31/79 [05:38<08:59, 11.23s/it]Epoch [3/100], Batch [31/79], loss_g:0.9770, loss_d:0.0259, real_scores:0.8605, fake_score:0.0116
+Training:  41%|████      | 32/79 [05:48<08:39, 11.05s/it]Epoch [3/100], Batch [32/79], loss_g:0.4566, loss_d:0.0625, real_scores:0.9190, fake_score:0.3247
+Training:  42%|████▏     | 33/79 [05:58<08:12, 10.71s/it]Epoch [3/100], Batch [33/79], loss_g:0.6962, loss_d:0.0349, real_scores:0.8867, fake_score:0.1658
+Training:  43%|████▎     | 34/79 [06:10<08:13, 10.96s/it]Epoch [3/100], Batch [34/79], loss_g:0.8168, loss_d:0.0211, real_scores:0.8921, fake_score:0.0962
+Training:  44%|████▍     | 35/79 [06:22<08:12, 11.19s/it]Epoch [3/100], Batch [35/79], loss_g:0.4967, loss_d:0.0775, real_scores:0.8628, fake_score:0.3040
+Training:  46%|████▌     | 36/79 [06:32<07:44, 10.80s/it]Epoch [3/100], Batch [36/79], loss_g:0.9643, loss_d:0.0270, real_scores:0.8768, fake_score:0.0181
+Training:  47%|████▋     | 37/79 [06:44<07:48, 11.16s/it]Epoch [3/100], Batch [37/79], loss_g:0.9868, loss_d:0.0198, real_scores:0.9040, fake_score:0.0066
+Training:  48%|████▊     | 38/79 [06:54<07:27, 10.92s/it]Epoch [3/100], Batch [38/79], loss_g:0.9875, loss_d:0.0077, real_scores:0.9396, fake_score:0.0063
+Training:  49%|████▉     | 39/79 [07:04<07:10, 10.77s/it]Epoch [3/100], Batch [39/79], loss_g:0.9852, loss_d:0.0036, real_scores:0.9681, fake_score:0.0075
+Training:  51%|█████     | 40/79 [07:16<07:13, 11.11s/it]Epoch [3/100], Batch [40/79], loss_g:0.9840, loss_d:0.0075, real_scores:0.9532, fake_score:0.0080
+Training:  52%|█████▏    | 41/79 [07:27<06:52, 10.87s/it]
