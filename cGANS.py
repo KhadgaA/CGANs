@@ -34,7 +34,7 @@ parser.add_argument("--n_cpu", type=int, default=4, help="number of cpu threads 
 # parser.add_argument("--latent_dim", type=int, default=100, help="dimensionality of the latent space")
 # parser.add_argument("--img_size", type=int, default=256, help="size of each image dimension")
 # parser.add_argument("--channels", type=int, default=1, help="number of image channels")
-parser.add_argument("--n_critic", type=int, default=5, help="number of training steps for discriminator per iter")
+parser.add_argument("--n_critic", type=int, default=7, help="number of training steps for discriminator per iter")
 parser.add_argument("--clip_value", type=float, default=0.01, help="lower and upper clip value for disc. weights")
 parser.add_argument("--sample_interval", type=int, default=100, help="interval betwen image samples")
 args = parser.parse_args()
@@ -154,10 +154,6 @@ train_ds = ImageSketchDataset(
 )
 
 
-# for example in train_ds:
-# 	print(example,"here")
-# 	break
-
 
 train_dl = DataLoader(
     train_ds,
@@ -185,8 +181,47 @@ def denorm(img_tensors):
 #     break
 
 
+# class Discriminator(nn.Module):
+#     def __init__(self, num_classes,ngpu=0):
+#         super(Discriminator, self).__init__()
+#         self.ngpu = ngpu
+#         self.main = nn.Sequential(
+#             nn.Conv2d(3, 64, kernel_size=4, stride=2, padding=1, bias=False),
+#             nn.BatchNorm2d(64),
+#             nn.LeakyReLU(0.2, inplace=True),
+#             nn.Conv2d(64, 128, kernel_size=4, stride=2, padding=1, bias=False),
+#             nn.BatchNorm2d(128),
+#             nn.LeakyReLU(0.2, inplace=True),
+#             nn.Conv2d(128, 256, kernel_size=4, stride=2, padding=1, bias=False),
+#             nn.BatchNorm2d(256),
+#             nn.LeakyReLU(0.2, inplace=True),
+#             nn.Conv2d(256, 512, kernel_size=4, stride=2, padding=1, bias=False),
+#             nn.BatchNorm2d(512),
+#             nn.LeakyReLU(0.2, inplace=True),
+#             nn.Conv2d(512, 1, kernel_size=4, stride=2, padding=0, bias=False),
+#         )
+
+#         self.flatten = nn.Flatten()
+
+#         # Output layer
+#         self.fc = nn.Linear(56, 1)  # Add an extra dimension for the class labels
+
+#         self.sigmoid = nn.Sigmoid()
+
+#     def forward(self, x, labels):
+
+#         x = self.main(x)
+#         x = self.flatten(x)
+
+#         # Concatenate labels with the features
+#         concatenated = torch.cat((x, labels), dim=1)
+#         # print(concatenated.shape, x.shape, labels.shape)
+#         x = self.fc(concatenated)
+#         # x = self.sigmoid(x)
+#         return x
+
 class Discriminator(nn.Module):
-    def __init__(self, num_classes,ngpu=0):
+    def __init__(self, num_classes, ngpu=0):
         super(Discriminator, self).__init__()
         self.ngpu = ngpu
         self.main = nn.Sequential(
@@ -204,25 +239,26 @@ class Discriminator(nn.Module):
             nn.LeakyReLU(0.2, inplace=True),
             nn.Conv2d(512, 1, kernel_size=4, stride=2, padding=0, bias=False),
         )
-
         self.flatten = nn.Flatten()
-
-        # Output layer
-        self.fc = nn.Linear(56, 1)  # Add an extra dimension for the class labels
-
+        
+        # Output layers
+        self.fc_dis = nn.Linear(49, 1)
+        self.fc_aux = nn.Linear(49, num_classes)  # Classifier for auxiliary task
+        
         self.sigmoid = nn.Sigmoid()
+        self.softmax = nn.Softmax(dim = 1)
 
-    def forward(self, x, labels):
-
+    def forward(self, x,labels):
         x = self.main(x)
         x = self.flatten(x)
+        
+        # realfake = self.sigmoid(self.fc_dis(x)).view(-1, 1).squeeze(1)
+        realfake = self.fc_dis(x)
 
-        # Concatenate labels with the features
-        concatenated = torch.cat((x, labels), dim=1)
-        # print(concatenated.shape, x.shape, labels.shape)
-        x = self.fc(concatenated)
-        # x = self.sigmoid(x)
-        return x
+        classes = self.softmax(self.fc_aux(x))
+        
+        return realfake, classes
+
 
 
 num_classes = len(train_ds.labels_df.columns) - 1
@@ -249,6 +285,8 @@ class Generator(nn.Module):
         self.max_pool2d = nn.MaxPool2d(kernel_size=2, stride=2)
         # Contracting path.
         # Each convolution is applied twice.
+        self.down_convolution__2 = double_convolution(8, 4)
+        self.down_convolution__1 = double_convolution(4, 8)
         self.down_convolution_0 = double_convolution(8, 1)
         self.down_convolution_1 = double_convolution(1, 64)
         self.down_convolution_2 = double_convolution(64, 128)
@@ -280,7 +318,9 @@ class Generator(nn.Module):
         self.out = nn.Conv2d(in_channels=64, out_channels=3, kernel_size=1)
 
     def forward(self, x):
-        down_0 = self.down_convolution_0(x)
+        down__2 = self.down_convolution__2(x)
+        down__1 = self.down_convolution__1(down__2)
+        down_0 = self.down_convolution_0(down__1)
         down_1 = self.down_convolution_1(down_0)
         down_2 = self.max_pool2d(down_1)
         down_3 = self.down_convolution_2(down_2)
@@ -302,7 +342,7 @@ class Generator(nn.Module):
         out = self.out(x)
         return out
 
-discriminator = Discriminator(num_classes,ngpu).to(device)
+discriminator = Discriminator(num_classes, ngpu).to(device)
 generator = Generator(ngpu).to(device)
 
 # Handle multi-GPU if desired
@@ -336,7 +376,7 @@ def sample_sketches(num_sketches):
 def Generate_Fakes(sketches):
     noisy_sketchs = add_gaussian_noise(sketches)
     noisy_sketchs_ = []
-    fake_labels = torch.randint(0, 7, (sketches.size(0), 1), device=sketches.device)
+    fake_labels = torch.randint(0, 7, (sketches.size(0), ), device=sketches.device)
     for noisy_sketch, fake_label in zip(noisy_sketchs, fake_labels):
         channels = torch.zeros(
             size=(7, *noisy_sketch.shape), device=noisy_sketch.device
@@ -348,7 +388,7 @@ def Generate_Fakes(sketches):
     noisy_sketchs = torch.stack(noisy_sketchs_)
 
     # convert fake_labels to one-hot encoding
-    fake_labels = F.one_hot(fake_labels, num_classes=7).squeeze(1).float().to(device)
+    # fake_labels = F.one_hot(fake_labels, num_classes=7).squeeze(1).float().to(device)
 
     return noisy_sketchs, fake_labels
 
@@ -375,6 +415,7 @@ def save_samples(index, generator, train_dl, show=True):
 
 # fixed_latent = torch.randn(64, latent_size, 1, 1, device=device)
 adversarial_loss = torch.nn.MSELoss()
+aux_criterion = nn.NLLLoss()
 Tensor = torch.cuda.FloatTensor if (device.type == 'cuda') else torch.FloatTensor
 
 def fit(epochs, lr, start_idx=1):
@@ -402,12 +443,12 @@ def fit(epochs, lr, start_idx=1):
             # Configure input
             real_images  = Variable(real_images.type(Tensor).to(device), requires_grad=True)
             sketches = sketches.to(device)
-            real_labels = real_labels.to(device)
+            real_labels = torch.argmax(real_labels.to(device), dim=1)
             # Adversarial ground truths
             batch_size = real_images.shape[0]
             
-            valid  = torch.full((batch_size,1), 1.0, dtype=torch.float, device=device)
-            fake = torch.full((batch_size,1), 0.0, dtype=torch.float, device=device)
+            # valid  = torch.full((batch_size,1), 1.0, dtype=torch.float, device=device)
+            # fake = torch.full((batch_size,1), 0.0, dtype=torch.float, device=device)
 
             # generate fake input
             latent_input, gen_labels = Generate_Fakes(sketches=sketches)
@@ -422,10 +463,9 @@ def fit(epochs, lr, start_idx=1):
             fake_images = generator(latent_input)
 
             #  real images
-            validity_real = discriminator(real_images,real_labels)
-
+            validity_real, real_aux_output = discriminator(real_images, real_labels)
             #  fake images
-            validity_fake = discriminator(fake_images, gen_labels)
+            validity_fake, fake_aux_output = discriminator(fake_images, gen_labels)
 
              # Compute W-div gradient penalty
             real_grad_out = Variable(Tensor(real_images.size(0), 1).fill_(1.0), requires_grad=False)
@@ -443,7 +483,11 @@ def fit(epochs, lr, start_idx=1):
             div_gp = torch.mean(real_grad_norm + fake_grad_norm) * k / 2
 
                # Adversarial loss
-            loss_d = -torch.mean(validity_real) + torch.mean(validity_fake) + div_gp
+            loss_d_wgan = -torch.mean(validity_real) + torch.mean(validity_fake) + div_gp
+            # print(fake_aux_output.shape,gen_labels.shape,real_aux_output.shape,real_labels.shape)
+            loss_d_aux = aux_criterion(fake_aux_output, gen_labels) + aux_criterion(real_aux_output, real_labels)
+            
+            loss_d = loss_d_wgan + loss_d_aux
 
             # real_loss_d = adversarial_loss(validity_real, valid)
             # real_score =torch.mean(validity_real).item()
@@ -465,13 +509,12 @@ def fit(epochs, lr, start_idx=1):
                 # ------------------
                 opt_g.zero_grad()
                 fake_images = generator(latent_input)
-                validity_fake = discriminator(fake_images, gen_labels)
+                validity_fake, fake_aux_output = discriminator(fake_images, gen_labels)
                 # loss_g = adversarial_loss(validity, valid)
-                loss_g = -torch.mean(validity_fake)
+                loss_g = -torch.mean(validity_fake) + aux_criterion(fake_aux_output, gen_labels) 
                 loss_g.backward()
                 opt_g.step()
 
-            
 
                 print(
                     "Epoch [{}/{}], Batch [{}/{}], loss_g:{:.4f}, loss_d:{:.4f}, real_scores:{:.4f}, fake_score:{:.4f}".format(
