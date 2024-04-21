@@ -13,15 +13,24 @@ import random
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from models.segmenatation_model import SegmentationModel, Decoder
 
+from tqdm import tqdm
 from datasets import *
+# /teamspace/studios/this_studio/DL_Assignment_4/Dataset
+image_dir = "/teamspace/studios/this_studio/DL_Assignment_4/Dataset/Train_data"
+sketch_dir = "/teamspace/studios/this_studio/DL_Assignment_4/Dataset/Paired_train_sketches"
+labels_df = "/teamspace/studios/this_studio/DL_Assignment_4/Dataset/Train/Train_labels.csv"
 
+# df = pd.read_csv(labels_df)
+# train=df.sample(frac=0.8,random_state=200)
+# test=df.drop(train.index)
 
-image_dir = "../dataset/dl_assignment_4/Train_data"
-sketch_dir = "../dataset/dl_assignment_4/Paired_train_sketches"
-labels_df = "../dataset/dl_assignment_4/Train/Train_labels.csv"
-image_dir_test = "../dataset/dl_assignment_4/Test/Test" 
-sketch_dir_val = "../dataset/dl_assignment_4/Paired_test_sketch " 
-labels_df_val = "../dataset/dl_assignment_4/Test/Test_labels.csv" 
+# train.to_csv('train_split.csv',index = False)
+# test.to_csv('test_split.csv',index = False)
+
+labels_df = "/teamspace/studios/this_studio/DL_Assignment_4/CBNGAN/train_split.csv"
+image_dir_val = "/teamspace/studios/this_studio/DL_Assignment_4/Dataset/Train_data"
+sketch_dir_val = "/teamspace/studios/this_studio/DL_Assignment_4/Dataset/Paired_train_sketches"
+labels_df_val = "/teamspace/studios/this_studio/DL_Assignment_4/CBNGAN/test_split.csv"
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")   
 
@@ -54,7 +63,7 @@ def accuracy(preds, masks, threshold=0.5):
 
 
 image_size = 128
-batch_size = 64
+batch_size = 64 *2
 stats_image = (0.485, 0.456, 0.406), (0.229, 0.224, 0.225)
 stats_sketch = (0,5), (0.5)
 
@@ -89,7 +98,7 @@ dataset = ImageSketchDataset(
 )
 
 val_dataset = ImageSketchDataset(
-    image_dir_test,
+    image_dir_val,
     sketch_dir_val,
     labels_df_val,
     transform_image=transform_image,
@@ -101,7 +110,7 @@ dataloader = DataLoader(
     dataset,
     batch_size=batch_size,
     shuffle=True,
-    # num_workers=2,
+    num_workers=6,
     pin_memory=True,
 )
 
@@ -109,7 +118,7 @@ val_dataloader = DataLoader(
     val_dataset,
     batch_size=batch_size,
     shuffle=False,
-    # num_workers=2,
+    num_workers=6,
     pin_memory=True,
 )
 
@@ -136,7 +145,7 @@ decoder_optimizer = optim.Adam(model.decoder.parameters(), lr=decoder_lr)
 encoder_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(encoder_optimizer, mode='min', factor=0.2, patience=5)
 decoder_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(decoder_optimizer, mode='min', factor=0.2, patience=5)
 
-num_epochs = 20
+num_epochs = 10
 
 train_losses = []
 val_losses = []
@@ -155,13 +164,14 @@ for epoch in range(num_epochs):
     running_val_acc = 0.0
 
     model.train()
-    for i, (images, masks) in enumerate(dataloader):
+    for i, (images, masks, _) in tqdm(enumerate(dataloader),total = len(dataloader)):
         images = images.to(device)
         masks = masks.to(device)
         encoder_optimizer.zero_grad()
         decoder_optimizer.zero_grad()
 
         outputs = model(images)
+        outputs = outputs.squeeze(1)
         loss = criterion(outputs, masks)
         loss.backward()
 
@@ -191,11 +201,12 @@ for epoch in range(num_epochs):
     model.eval()
     val_loss = 0.0
     with torch.no_grad():
-        for i, (images, masks) in enumerate(val_dataloader):
+        for i, (images, masks, _) in tqdm(enumerate(val_dataloader),total = len(val_dataloader)):
             images = images.to(device)
             masks = masks.to(device)
 
             outputs = model(images)
+            outputs = outputs.squeeze(1)
             loss = criterion(outputs, masks)
             val_loss += loss.item()
             encoder_scheduler.step(val_loss)
@@ -225,6 +236,6 @@ for epoch in range(num_epochs):
     avg_val_acc = running_val_acc / len(val_dataset)
 
     print(f'Epoch [{epoch + 1}/{num_epochs}], Train Loss: {train_losses[-1]:.4f}, Val Loss: {val_losses[-1]:.4f}, Avg Train IoU : {avg_train_iou:.4f}, Avg Train Dice: {avg_train_dice:.4f}, Avg Val IoU : {avg_val_iou:.4f}, Avg Val Dice: {avg_val_dice:.4f}, Val Accuracy: {avg_val_acc:.4f}')
-
-save_model_path_task2 = './saved_models/segmentation_model_task_2.pth'
-torch.save(model.state_dict(), save_model_path_task2)
+    # print(f' Epoch [{epoch + 1}/{num_epochs}], Avg Train IoU : {avg_train_iou:.4f}, Avg Train Dice: {avg_train_dice:.4f}')
+    save_model_path_task2 = 'segmentation_model.pth'
+    torch.save(model.state_dict(), save_model_path_task2)
