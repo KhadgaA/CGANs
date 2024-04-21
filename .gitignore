@@ -6,3 +6,4 @@ dataset/cifar-100-python.tar.gz
 *.csv
 *.log
 *.pth
+!/CBNGAN/segmentation_model.pth
