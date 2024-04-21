@@ -1,0 +1,128 @@
+{
+    "os": "Linux-5.15.0-1057-aws-x86_64-with-glibc2.31",
+    "python": "3.10.10",
+    "heartbeatAt": "2024-04-14T12:00:22.726882",
+    "startedAt": "2024-04-14T12:00:22.453195",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/teamspace/studios/this_studio/DL_Assignment_4/CBNGAN/CBN_cGAN.py",
+    "codePathLocal": "CBN_cGAN.py",
+    "codePath": "CBNGAN/CBN_cGAN.py",
+    "git": {
+        "remote": "https://github.com/M23CSA017/DL_Assignment_4.git",
+        "commit": "9f8430895e66246be9205d3c9c49ea879dacd80f"
+    },
+    "email": null,
+    "root": "/teamspace/studios/this_studio/DL_Assignment_4",
+    "host": "ip-10-192-11-79",
+    "username": "zeus",
+    "executable": "/home/zeus/miniconda3/envs/cloudspace/bin/python",
+    "cpu_count": 8,
+    "cpu_count_logical": 16,
+    "cpu_freq": {
+        "current": 2763.048625,
+        "min": 0.0,
+        "max": 0.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2650.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2650.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2650.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2650.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2650.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2650.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2650.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3598.882,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2650.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2650.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2650.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2650.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2650.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2650.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2650.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3559.862,
+            "min": 0.0,
+            "max": 0.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 387.4823341369629,
+            "used": 47.37747573852539
+        }
+    },
+    "gpu": "NVIDIA L4",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA L4",
+            "memory_total": 24152899584
+        }
+    ],
+    "memory": {
+        "total": 60.46147537231445
+    }
+}

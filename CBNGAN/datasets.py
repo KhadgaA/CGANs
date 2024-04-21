@@ -18,7 +18,7 @@ import glob
 
 class ImageSketchDataset(Dataset):
     def __init__(
-        self, image_dir, sketch_dir, labels_df, transform_image, transform_sketch
+        self, image_dir, sketch_dir, labels_df, transform_image, transform_sketch,
     paired = False):
         self.image_dir = image_dir
         self.sketch_dir = sketch_dir
@@ -28,28 +28,36 @@ class ImageSketchDataset(Dataset):
         self.all_sketches = glob.glob1(
             self.sketch_dir, "*.png"
         )  # return .jpg or .png files
-
+        self.paired = paired
     def __len__(self):
         return len(self.labels_df)
 
     def __getitem__(self, index):
         # print(self.labels_df,"here")
-        image_filename = self.labels_df.iloc[index]["image"]  # Get image filename
+        while True:
+            image_filename = self.labels_df.iloc[index]["image"]  # Get image filename
 
-        label_cols = ["MEL", "NV", "BCC", "AKIEC", "BKL", "DF", "VASC"]
-        label = self.labels_df.loc[index, label_cols].values.astype(
-            "float32"
-        )  # Load and convert labels
+            label_cols = ["MEL", "NV", "BCC", "AKIEC", "BKL", "DF", "VASC"]
+            label = self.labels_df.loc[index, label_cols].values.astype(
+                "float32"
+            )  # Load and convert labels
 
-        image_path = os.path.join(self.image_dir, image_filename + ".jpg")
+            image_path = os.path.join(self.image_dir, image_filename + ".jpg")
+            
+            if self.paired:
+                sketch_filename = image_filename + "_segmentation.png"
+                sketch_path = os.path.join(self.sketch_dir, sketch_filename)
+                if not os.path.exists(sketch_path):
+                    index = (index + 1 ) % self.__len__()
+                    continue
+            else:
+
+                sketch_filename = np.random.choice(self.all_sketches)
+                sketch_path = os.path.join(self.sketch_dir, sketch_filename)
+                break
+            
+            break
         
-        if self.paired:
-            sketch_filename = image_filename + "_segmentation.png"
-        else:
-            sketch_filename = np.random.choice(self.all_sketches)
-
-        sketch_path = os.path.join(self.sketch_dir, sketch_filename)
-
         image = Image.open(image_path)
         # print(image)
 

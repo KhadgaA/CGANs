@@ -41,12 +41,13 @@ class single_convolution(nn.Module):
         super(single_convolution, self).__init__()
 
         self.c1 = nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1)
-        self.swn1 = SandwichBatchNorm2d(out_channels, num_classes)
+        # self.swn1 = SandwichBatchNorm2d(out_channels, num_classes)
+        self.swn1 = nn.BatchNorm2d(out_channels)
         self.act1 = nn.LeakyReLU(0.2,inplace=True)
         
-    def forward(self, x,y):
+    def forward(self, x):
         x = self.c1(x)
-        x = self.swn1(x,y)
+        x = self.swn1(x)
         x = self.act1(x)
 
         return x
@@ -77,11 +78,11 @@ class Discriminator(nn.Module):
         self.sigmoid = nn.Sigmoid()
         self.softmax = nn.Softmax(dim = 1)
 
-    def forward(self, x, y):
-        x = self.des_block1(x, y)
-        x = self.des_block2(x, y)
-        x = self.des_block3(x, y)
-        x = self.des_block4(x, y)
+    def forward(self, x):
+        x = self.des_block1(x)
+        x = self.des_block2(x)
+        x = self.des_block3(x)
+        x = self.des_block4(x)
         x = self.conv5(x)
         x = self.flatten(x)
         
