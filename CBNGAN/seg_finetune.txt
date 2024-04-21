@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/scratch/m23csa017/DL_Assignment_4/CBNGAN/finetune_segmodel.py", line 16, in <module>
+    from datasets import *
+  File "/scratch/m23csa017/DL_Assignment_4/CBNGAN/datasets.py", line 22
+    paired = False):
+    ^^^^^^
+SyntaxError: invalid syntax

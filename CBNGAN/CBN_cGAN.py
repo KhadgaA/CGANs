@@ -31,6 +31,8 @@ from datasets import *
 from models.segmenatation_model import SegmentationModel
 from models.Generator import Generator
 from models.Discriminator import Discriminator  
+from scipy.linalg import sqrtm
+from torchvision.models import inception_v3
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--n_epochs", type=int, default=100, help="number of epochs of training")
@@ -739,16 +741,116 @@ history = fit(seg_model,epochs, lr)
 
 losses_g, losses_d, real_scores, fake_scores = history
 
-# plt.plot(losses_d, '-')
-# plt.plot(losses_g, '-')
-# plt.xlabel('epoch')
-# plt.ylabel('loss')
-# plt.legend(['Discriminator', 'Generator'])
-# plt.title('Losses')
+# calculate the inception score for the model
+def calculate_inception_score(generator, num_classes, n_split=10, eps=1E-16):
+    # Generate fake images
+    num_samples = 50000
+    latent_size = 100
+    fake_images = torch.randn(num_samples, latent_size, 1, 1)
+    fake_labels = torch.randint(0, num_classes, (num_samples,))
 
-# plt.plot(real_scores, '-')
-# plt.plot(fake_scores, '-')
-# plt.xlabel('epoch')
-# plt.ylabel('score')
-# plt.legend(['Real', 'Fake'])
-# plt.title('Scores')
+    # Generate fake images using the generator
+    fake_images = generator(fake_images, fake_labels)
+
+    # Load the InceptionV3 model
+    inception_model = models.inception_v3(pretrained=True, transform_input=False)
+    inception_model.to(device)
+    inception_model.eval()
+
+    # Calculate the activations for the fake images
+    fake_activations = []
+    batch_size = 100
+    num_batches = num_samples // batch_size
+    for i in range(num_batches):
+        batch = fake_images[i * batch_size : (i + 1) * batch_size]
+        batch = batch.to(device)
+        activations = inception_model(batch)
+        fake_activations.append(activations.detach().cpu())
+
+    fake_activations = torch.cat(fake_activations, dim=0)
+
+    # Calculate the activations for the real images
+    real_activations = []
+    for i, (real_images, _, _) in enumerate(val_dl):
+        real_images = real_images.to(device)
+        activations = inception_model(real_images)
+        real_activations.append(activations.detach().cpu())
+
+    real_activations = torch.cat(real_activations, dim=0)
+
+    # Calculate the mean and covariance of the real activations
+    mu_real = torch.mean(real_activations, dim=0)
+    sigma_real = torch_cov(real_activations, rowvar=False)
+
+    # Calculate the mean and covariance of the fake activations
+    mu_fake = torch.mean(fake_activations, dim=0)
+    sigma_fake = torch_cov(fake_activations, rowvar=False)
+
+    # Calculate the KL divergence between the real and fake distributions
+    kl_divergence = 0.5 * (
+        torch.trace(sigma_real @ torch.inverse(sigma_fake))
+        + torch.trace(sigma_fake @ torch.inverse(sigma_real))
+        + (mu_real - mu_fake).T @ torch.inverse(sigma_real) @ (mu_real - mu_fake)
+        + (mu_fake - mu_real).T @ torch.inverse(sigma_fake) @ (mu_fake - mu_real)
+        - 2 * num_classes
+    )
+
+    # Calculate the inception score
+    inception_score = np.exp(kl_divergence.item() / num_samples) + eps
+
+    return inception_score
+
+def torch_cov(m, rowvar=False):
+    if rowvar:
+        m = m.t()
+    m = m.type(torch.double)
+    fact = 1.0 / (m.size(1) - 1)
+    m -= torch.mean(m, dim=1, keepdim=True)
+    mt = m.t()
+    return fact * m.matmul(mt).squeeze()
+
+inception_score = calculate_inception_score(generator, num_classes)
+print("Inception Score:", inception_score)
+
+# calculate the FID score for the model
+def calculate_fid_score(generator, num_classes, n_samples=50000, eps=1e-6):
+    # Generate fake images
+    fake_images = []
+    for _ in range(n_samples):
+        latent = torch.randn(1, latent_size, 1, 1, device=device)
+        fake_image = generator(latent, y)
+        fake_images.append(fake_image)
+    fake_images = torch.cat(fake_images, dim=0)
+
+    # Calculate mean and covariance of fake images
+    fake_mean = torch.mean(fake_images, dim=0)
+    fake_cov = torch_cov(fake_images, rowvar=False)
+
+    # Generate real images
+    real_images = []
+    for _ in range(n_samples):
+        real_image, _ = next(iter(train_dl))
+        real_images.append(real_image)
+    real_images = torch.cat(real_images, dim=0)
+
+    # Calculate mean and covariance of real images
+    real_mean = torch.mean(real_images, dim=0)
+    real_cov = torch_cov(real_images, rowvar=False)
+
+    # Calculate squared Frobenius norm between means
+    mean_diff = real_mean - fake_mean
+    mean_diff_squared = torch.sum(mean_diff * mean_diff)
+
+    # Calculate trace of product of covariances
+    cov_product = torch.matmul(real_cov, fake_cov)
+    cov_product_sqrt = torch.sqrt(torch.abs(cov_product))
+    trace_cov_product = torch.trace(cov_product_sqrt)
+
+    # Calculate FID score
+    fid_score = mean_diff_squared + torch.trace(real_cov) + torch.trace(fake_cov) - 2 * trace_cov_product
+    fid_score += eps
+
+    return fid_score.item()
+
+fid_score = calculate_fid_score(generator, num_classes)
+print("FID Score:", fid_score)
